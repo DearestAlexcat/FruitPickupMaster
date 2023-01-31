@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Complete
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 0af00913036bb4458af259b92a8c0a81, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: af4e0c11e8d5f47d1a7d06f494068d5f, type: 3}
+  - {fileID: 21300000, guid: ba7c10c2b1c8c46019a9e0a460048bfc, type: 3}
+  - {fileID: 21300000, guid: bfe7dcf41760a437db2055c70166b4bc, type: 3}
+  - {fileID: 21300000, guid: efdd5eaab485a4117a350e5c1c3057ad, type: 3}
+  - {fileID: 21300000, guid: d468ea6e4007243489c86cc47217e08c, type: 3}
+  - {fileID: 21300000, guid: ed92ec9ed249244d997caf034dd8fa4b, type: 3}
+  - {fileID: 21300000, guid: 529a3ebefc633422eb8437e8e8158047, type: 3}
+  - {fileID: 21300000, guid: 2459335f772594055be43c59fc7609f3, type: 3}
+  - {fileID: 21300000, guid: 47f65d8fbb2f749f8a5dda9beb38a623, type: 3}
+  - {fileID: 21300000, guid: e7c0d0ffc5bbd4de29da1f8ff8a826ca, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - complete_star1
+  - complete_coin
+  - btn_yellow_restart
+  - complete_bg
+  - complete_star_bg
+  - txt_complete
+  - complete_star2
+  - btn_blue_forward
+  - btn_red_home
+  - complete_result_info_bg
+  m_RenderDataMap: {}
+  m_Tag: Complete
+  m_IsVariant: 0

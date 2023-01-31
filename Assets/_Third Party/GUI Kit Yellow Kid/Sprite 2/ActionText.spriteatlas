@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ActionText
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 36bb631999c254c5d92e49300dc22bd5, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a0763070a38e2464db1bf122c3bdcd3f, type: 3}
+  - {fileID: 21300000, guid: 3095a2f07b1d1413a93ada63d2e0f41e, type: 3}
+  - {fileID: 21300000, guid: 525875b245b8f49929f8956b60c2a236, type: 3}
+  - {fileID: 21300000, guid: 2bb9d223ebe78423fa46d3645211e351, type: 3}
+  - {fileID: 21300000, guid: b40ea8649ecec48cd82aabd25deb99e7, type: 3}
+  - {fileID: 21300000, guid: 104450c41bef44ffb963e57a6736e532, type: 3}
+  - {fileID: 21300000, guid: e33adac4d7a634b6b9ffd212935d3c08, type: 3}
+  - {fileID: 21300000, guid: d8a198e4e4c0f4c3d8b34960129ea19f, type: 3}
+  - {fileID: 21300000, guid: cb9c1245fc80342a0b18abbce243749d, type: 3}
+  - {fileID: 21300000, guid: 45b4d99509a1e4e1dae128f1b3ef83f2, type: 3}
+  - {fileID: 21300000, guid: 6db59cf5e71c24988a95e7819d46cadb, type: 3}
+  - {fileID: 21300000, guid: a0ce8f767cbf446d49f2ddab6373dfc8, type: 3}
+  - {fileID: 21300000, guid: 9f66b6b6e0828455da93e61fcf6e34ff, type: 3}
+  - {fileID: 21300000, guid: fb64ba278b32549cf96b4d4589ace3c5, type: 3}
+  - {fileID: 21300000, guid: 590fb5370dddf41d3ac9caf52ad71326, type: 3}
+  - {fileID: 21300000, guid: c064dd37622004993a5789786fe35404, type: 3}
+  - {fileID: 21300000, guid: 8f338557b9e684c67a07580a5065854b, type: 3}
+  - {fileID: 21300000, guid: a91c36b76004b4b7a99cc38ec9ba7e5f, type: 3}
+  - {fileID: 21300000, guid: cb7c1528c2c36416aa539277047d0273, type: 3}
+  - {fileID: 21300000, guid: 28c33bc8017e64958a3393fdd9a6bef6, type: 3}
+  - {fileID: 21300000, guid: 26d76f59f7b7b4edb9cb6d54c3d0350f, type: 3}
+  - {fileID: 21300000, guid: 26948f695bff14af892a5685bdc4417a, type: 3}
+  - {fileID: 21300000, guid: 88388e8a003674db19c7cede85cbd973, type: 3}
+  - {fileID: 21300000, guid: ae97763c6dba0472fa16bf0dad2507ed, type: 3}
+  - {fileID: 21300000, guid: 34aa86dce4b8f48efb450298ac6504a5, type: 3}
+  - {fileID: 21300000, guid: 68ddc0fc6c09642279b7de5c688b8f04, type: 3}
+  - {fileID: 21300000, guid: 607413fcac8f74f91b96aa5b60a394b5, type: 3}
+  - {fileID: 21300000, guid: 8b2c881dab32b443c88e43bc260e5d0c, type: 3}
+  - {fileID: 21300000, guid: a665974dc2096441bb33a72787ad6b2a, type: 3}
+  - {fileID: 21300000, guid: 7d1a89cdbebf742c18821dc41cd1b633, type: 3}
+  - {fileID: 21300000, guid: 115dbc0ebe95e4e1ba3715d9414ae095, type: 3}
+  - {fileID: 21300000, guid: ab53757e563144326aedd791d5b3696b, type: 3}
+  - {fileID: 21300000, guid: 624b2a9ee1e1143bc96c2c57f60ba839, type: 3}
+  - {fileID: 21300000, guid: c5f3f0eef8155453c96f0ea368edb416, type: 3}
+  - {fileID: 21300000, guid: 79a02d0f544e64c2ebe7275ad7a44245, type: 3}
+  - {fileID: 21300000, guid: 6a0df73f01918437bb7614197df04ee9, type: 3}
+  - {fileID: 21300000, guid: df3b4a6f86a224fb79db20e2726dd11c, type: 3}
+  - {fileID: 21300000, guid: d26a02cfe4b374d269c883cd70dfb1ab, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - txt_combo_num_3
+  - txt_mission_clear_01
+  - txt_perfect
+  - txt_awesome
+  - txt_game_over_02
+  - txt_combo_num_2
+  - txt_ready
+  - txt_times_up_deco_01
+  - txt_mission_clear_deco_01
+  - txt_times_up_02
+  - txt_mission_clear_02
+  - txt_level_up_01
+  - txt_start
+  - txt_level_up_02
+  - txt_wow
+  - txt_game_over_deco_01
+  - txt_game_over_deco_02
+  - txt_times_up_01
+  - txt_nice
+  - txt_great
+  - txt_bonus_time_01
+  - txt_go
+  - txt_bonus_time_deco_01
+  - txt_combo_num_5
+  - txt_bonus_time_deco_02
+  - txt_combo_num_7
+  - txt_good
+  - txt_combo_num_1
+  - txt_combo_num_9
+  - txt_combo_num_6
+  - txt_combo_num_0
+  - txt_combo_num_8
+  - txt_combo_num_4
+  - txt_bonus_time_02
+  - txt_combo
+  - txt_times_up_deco_02
+  - txt_mission_clear_deco_02
+  - txt_game_over_01
+  m_RenderDataMap: {}
+  m_Tag: ActionText
+  m_IsVariant: 0
