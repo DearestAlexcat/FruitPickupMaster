@@ -8,18 +8,16 @@ namespace Client
 {
     sealed class BasketSystem : IEcsRunSystem
     {
+        private readonly EcsWorldInject _world = default;
+
+        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
+        private readonly EcsCustomInject<StaticData> _staticData = default;
+
         private readonly EcsFilterInject<Inc<AddToCartRequest>> _addFilter = default;
         private readonly EcsFilterInject<Inc<HookFruitRequest>> _hookFruitFilter = default;
-        
-        //private readonly EcsFilterInject<Inc<RopePointsComponent>> _ropeFilter = default;
         private readonly EcsFilterInject<Inc<Component<GrapplingRope>>> _ropeFilter = default;
-
         private readonly EcsFilterInject<Inc<Component<ConveyorElement>>> _conveyorFilter = default;
-        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
-        private readonly EcsCustomInject<Config> _config = default;
         private readonly EcsFilterInject<Inc<SpawnFruitsRequest>> _spawnFilter = default;
-
-        private readonly EcsWorldInject _world = default;
 
         public void Run(EcsSystems systems)
         {
@@ -148,7 +146,7 @@ namespace Client
             {
                 // simple delay
                 DOTween.Sequence()
-                    .AppendInterval(_config.Value.pauseBeforeEnd)
+                    .AppendInterval(_staticData.Value.pauseBeforeEnd)
                     .AppendCallback(() =>
                     {
                         StopSpawnFruit();
@@ -172,7 +170,7 @@ namespace Client
 
         private void CreatePopUpText(Unit u)
         {
-            ref var c = ref EcsWorldEx.GetWorld().NewEntityRef<PopUpRequest>();
+            ref var c = ref _world.Value.NewEntityRef<PopUpRequest>();
             c.SpawnPosition = u.PopupPointer.position;
             c.SpawnRotation = Quaternion.identity;
             c.Parent = u.transform;

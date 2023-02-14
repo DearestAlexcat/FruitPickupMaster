@@ -1,19 +1,22 @@
 ﻿using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 
-class GameInitSystem : IEcsInitSystem
+namespace Client
 {
-    private readonly EcsCustomInject<SaveInJson> _saveInJson = default;
-
-    public void Init(EcsSystems systems)
+    class GameInitSystem : IEcsInitSystem
     {
-        LoadGameData();
+        private readonly EcsCustomInject<SaveInJson> _saveInJson = default;
 
-        systems.GetWorld().NewEntity<LevelLoadRequest>();
-    }
+        public void Init(EcsSystems systems)
+        {
+            LoadGameData();
 
-    private void LoadGameData()
-    {
-        _saveInJson.Value.Load();
+            systems.GetWorld().NewEntity<LevelLoadRequest>();
+        }
+
+        private void LoadGameData()
+        {
+            _saveInJson.Value.Load();
+        }
     }
 }

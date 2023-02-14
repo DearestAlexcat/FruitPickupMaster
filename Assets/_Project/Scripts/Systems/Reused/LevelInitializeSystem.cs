@@ -9,7 +9,7 @@ namespace Client
     {
         private readonly EcsCustomInject<SaveInJson> _saveInJson = default;
         private readonly EcsCustomInject<SceneContext> _sceneContext = default;
-        private readonly EcsCustomInject<Config> _config = default;
+        private readonly EcsCustomInject<StaticData> _staticData = default;
 
         private readonly EcsFilterInject<Inc<LevelInitializeRequest>> _initializefilter = default;
         private readonly EcsFilterInject<Inc<Component<PlayerUnit>, Component<ConveyorElement>>> _playerfilter = default;
@@ -70,8 +70,8 @@ namespace Client
 
         private void InitializeCameraOrientation()
         {
-            _sceneContext.Value.Camera.transform.position = _config.Value.camStartPosition;
-            _sceneContext.Value.Camera.transform.rotation = _config.Value.camStartRotation;
+            _sceneContext.Value.Camera.transform.position = _staticData.Value.camStartPosition;
+            _sceneContext.Value.Camera.transform.rotation = _staticData.Value.camStartRotation;
         }
 
         private void InitializeUI()
@@ -105,7 +105,7 @@ namespace Client
                 .AppendInterval(1f)
                 .AppendCallback(() =>
                 {
-                    EcsStartup.Instance.SceneContext.ThisUIAnimation.Hide("LevelLabel", () =>
+                    _sceneContext.Value.ThisUIAnimation.Hide("LevelLabel", () =>
                     {
                         _sceneContext.Value.ThisUIAnimation.Show("SliderProgress");
                         InitializePlayerInput(systems);

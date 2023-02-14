@@ -1,7 +1,8 @@
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 
-namespace Client {
+namespace Client 
+{
     sealed class FreeFruitsSystem : IEcsRunSystem  
     {
         private readonly EcsFilterInject<Inc<FreeFruitsRequest>> _freeFilter = default;

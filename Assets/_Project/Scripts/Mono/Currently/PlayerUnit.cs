@@ -1,22 +1,26 @@
 using UnityEngine;
+using Leopotam.EcsLite;
 
-public class PlayerUnit : Unit
-{
-    [field: SerializeField] public Transform CameraZoomTarget { get; private set; }
-
-    //[Header("RIGGING")]
-    //public PlayerRiggingManager riggingManager;
-
-    private void Awake()
+namespace Client 
+{ 
+    public class PlayerUnit : Unit
     {
-        riggingManager.InitializeIK();
-        InitializeUnitEntity();
-        InitializeAnimationEntity();
-    }
+        [field: SerializeField] public Transform CameraZoomTarget { get; private set; }
 
-    private void InitializeUnitEntity()
-    {
-        Entity = EcsWorldEx.GetWorld().NewEntity<Component<PlayerUnit>>();
-        EcsWorldEx.GetWorld().GetEntityRef<Component<PlayerUnit>>(Entity).Value = this;
+        //[Header("RIGGING")]
+        //public PlayerRiggingManager riggingManager;
+
+        private void Awake()
+        {
+            riggingManager.InitializeIK();
+            InitializeUnitEntity();
+            InitializeAnimationEntity();
+        }
+
+        private void InitializeUnitEntity()
+        {
+            Entity = Service<EcsWorld>.Get().NewEntity<Component<PlayerUnit>>();
+            Service<EcsWorld>.Get().GetEntityRef<Component<PlayerUnit>>(Entity).Value = this;
+        }
     }
 }

@@ -3,35 +3,34 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
 
-namespace Client {
-    
+namespace Client 
+{
     sealed class EcsStartup : MonoBehaviour {
         
-        EcsSystems _systems;
+        private EcsWorld _world;
+        private EcsSystems _systems;
 
-        [SerializeField] private Config _config = default;
-        [SerializeField] private Prefabs _prefabs = default;
-        
-        private SceneContext _sceneContext = default;
-        private SaveInJson _saveInJson = new SaveInJson();
-
-        public Prefabs Prefab => _prefabs;
-        public Config Config => _config;
-        public SaveData SaveInJson => _saveInJson.GetData;
-        public SceneContext SceneContext => _sceneContext;
-
-        static public EcsStartup Instance { get; private set; }
-
-        public void Awake()
-        {
-            Instance = this;
-        }
-
+        public SaveInJson saveInJson;
+        public Prefabs prefabs;
+        public RuntimeData runtimeData;
+        public StaticData staticData;
+        public SceneContext sceneContext;
+       
         public void Start () 
         {
-            _sceneContext = GetComponent<SceneContext>();
+            _world = new EcsWorld();
+            _systems = new EcsSystems(_world);
 
-            _systems = new EcsSystems (EcsWorldEx.GetWorld());
+            runtimeData = new RuntimeData();
+
+            Service<SceneContext>.Set(sceneContext);
+            Service<RuntimeData>.Set(runtimeData);
+            Service<StaticData>.Set(staticData);
+            Service<SaveInJson>.Set(saveInJson);
+            Service<EcsWorld>.Set(_world);
+
+            GameInitialization.FullInit();
+
             _systems
                 .Add(new GameInitSystem())
                 .Add(new CameraInitSystem())
@@ -64,7 +63,7 @@ namespace Client {
 #if UNITY_EDITOR
                 .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
 #endif
-                .Inject(_config, _prefabs, _sceneContext, new AnalyticsManager(), _saveInJson)
+                .Inject(staticData, runtimeData, prefabs, sceneContext, saveInJson, new AnalyticsManager())
                 .Init();
         }
 

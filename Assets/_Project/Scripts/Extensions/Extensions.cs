@@ -10,13 +10,6 @@ public static class FilterEx
 
 public static class EcsWorldEx
 {
-    static EcsWorld BaseWorld;
-
-    public static EcsWorld GetWorld()
-    {
-        return BaseWorld == null ? BaseWorld = new EcsWorld() : BaseWorld;
-    }
-
     public static ref T GetEntityRef<T>(this EcsWorld world, int entity) where T : struct
     {
         return ref world.GetPool<T>().Get(entity);

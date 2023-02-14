@@ -1,40 +1,43 @@
+using Leopotam.EcsLite;
 using UnityEngine;
 
-public class StandUnit : MonoBehaviour // ?
+namespace Client
 {
-    [HideInInspector] public int Entity;
-
-    public Animator animator;
-
-    public AnimationState state;
-    public AnimationFlags flag;
-
-    private void Awake()
+    public class StandUnit : MonoBehaviour // ?
     {
-        InitializeUnitEntity();
-        InitializeAnimationEntity();
-        PlayAnimation(state, flag);
-    }
+        [HideInInspector] public int Entity;
 
-    public void PlayAnimation(AnimationState state, AnimationFlags flag)
-    {
-        ref var animationComponent = ref EcsWorldEx.GetWorld().GetEntityRef<AnimationStateComponent>(Entity);
+        public Animator animator;
 
-        if (animationComponent.TempHash != (int)state)
+        public AnimationState state;
+        public AnimationFlags flag;
+
+        private void Awake()
         {
-            animationComponent.Value |= flag;
+            InitializeUnitEntity();
+            InitializeAnimationEntity();
+            PlayAnimation(state, flag);
         }
-    }
 
-    private void InitializeUnitEntity()
-    {
-        Entity = EcsWorldEx.GetWorld().NewEntity<Component<StandUnit>>();
-        EcsWorldEx.GetWorld().GetEntityRef<Component<StandUnit>>(Entity).Value = this;
-    }
+        public void PlayAnimation(AnimationState state, AnimationFlags flag)
+        {
+            ref var animationComponent = ref Service<EcsWorld>.Get().GetEntityRef<AnimationStateComponent>(Entity);
 
-    protected void InitializeAnimationEntity()
-    {
-        EcsWorldEx.GetWorld().AddEntity<AnimationStateComponent>(Entity);
-        EcsWorldEx.GetWorld().GetEntityRef<AnimationStateComponent>(Entity).unitAnimator = animator;
+            if (animationComponent.TempHash != (int)state)
+            {
+                animationComponent.Value |= flag;
+            }
+        }
+
+        private void InitializeUnitEntity()
+        {
+            Entity = Service<EcsWorld>.Get().NewEntity<Component<StandUnit>>();
+            Service<EcsWorld>.Get().GetEntityRef<Component<StandUnit>>(Entity).Value = this;
+        }
+
+        protected void InitializeAnimationEntity()
+        {
+            Service<EcsWorld>.Get().AddEntityRef<AnimationStateComponent>(Entity).unitAnimator = animator;
+        }
     }
 }

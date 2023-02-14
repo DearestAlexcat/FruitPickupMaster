@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Client
 {
-    public class UVScrollingSystem : IEcsRunSystem
+    sealed class UVScrollingSystem : IEcsRunSystem
     {
         private readonly EcsFilterInject<Inc<UVScrollingComponent>> _uvScrollFilter = default;
 
@@ -16,12 +16,6 @@ namespace Client
                 
                 c.CurrentOffset.x += Time.deltaTime * c.Speed.x;
                 c.CurrentOffset.y += Time.deltaTime * c.Speed.y;
-
-                // ?
-                if(c.CurrentOffset.x > 50)
-                    c.CurrentOffset.x %= 50;
-                if (c.CurrentOffset.y > 50)
-                    c.CurrentOffset.y %= 50;
 
                 c.ScrollingObject.sharedMaterial.SetTextureOffset("_MainTex", c.CurrentOffset);
             }

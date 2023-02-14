@@ -8,7 +8,7 @@ namespace Client
     sealed class CameraInitSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly EcsCustomInject<SceneContext> _sceneContext = default;
-        private readonly EcsCustomInject<Config> _config = default;
+        private readonly EcsCustomInject<StaticData> _staticData = default;
 
         private float initialSize;
         private float targetAspect;
@@ -24,8 +24,8 @@ namespace Client
 
         private void InitOrientation()
         {
-            _config.Value.camStartPosition = _sceneContext.Value.Camera.transform.position;
-            _config.Value.camStartRotation = _sceneContext.Value.Camera.transform.rotation;
+            _staticData.Value.camStartPosition = _sceneContext.Value.Camera.transform.position;
+            _staticData.Value.camStartRotation = _sceneContext.Value.Camera.transform.rotation;
         }
 
         private void Monitoring()
@@ -41,7 +41,7 @@ namespace Client
 
         //private void SetFOV()
         //{
-        //    float hFOVrad = _config.Value.hFOV * Mathf.Deg2Rad;
+        //    float hFOVrad = _staticData.Value.hFOV * Mathf.Deg2Rad;
         //    float camH = Mathf.Tan(hFOVrad * 0.5f) / _sceneContext.Value.Camera.aspect;
         //    float vFOVrad = Mathf.Atan(camH) * 2f;
 
@@ -49,18 +49,18 @@ namespace Client
 
         //    _sceneContext.Value.Camera.fieldOfView = /*fov < 60f ? 60f :*/ fov; //?
 
-        //    var halfFrustumHeight = _config.Value.desiredDistanceOrtho * Mathf.Tan(_sceneContext.Value.Camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        //    var halfFrustumHeight = _staticData.Value.desiredDistanceOrtho * Mathf.Tan(_sceneContext.Value.Camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         //    _sceneContext.Value.CameraOrtho.orthographicSize = Mathf.Abs(halfFrustumHeight);
         //}
 
         private void Init()
         {
-           // var halfFrustumHeight = _config.Value.desiredDistanceOrtho * Mathf.Tan(_sceneContext.Value.Camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+           // var halfFrustumHeight = _staticData.Value.desiredDistanceOrtho * Mathf.Tan(_sceneContext.Value.Camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
            // _sceneContext.Value.CameraOrtho.orthographicSize = Mathf.Abs(halfFrustumHeight);
            
             initialSize = _sceneContext.Value.Camera.orthographicSize;
 
-            targetAspect = _config.Value.DefaultResolution.x / _config.Value.DefaultResolution.y;
+            targetAspect = _staticData.Value.DefaultResolution.x / _staticData.Value.DefaultResolution.y;
 
             initialFov = _sceneContext.Value.Camera.fieldOfView;
             horizontalFov = CalcVerticalFov(initialFov, 1f / targetAspect);
@@ -80,12 +80,12 @@ namespace Client
             if (_sceneContext.Value.Camera.orthographic)
             {
                 float constantWidthSize = initialSize * (targetAspect / _sceneContext.Value.Camera.aspect);
-                _sceneContext.Value.Camera.orthographicSize = Mathf.Lerp(constantWidthSize, initialSize, _config.Value.WidthOrHeight);
+                _sceneContext.Value.Camera.orthographicSize = Mathf.Lerp(constantWidthSize, initialSize, _staticData.Value.WidthOrHeight);
             }
             else
             {
                 float constantWidthFov = CalcVerticalFov(horizontalFov, _sceneContext.Value.Camera.aspect);
-                _sceneContext.Value.Camera.fieldOfView = Mathf.Lerp(constantWidthFov, initialFov, _config.Value.WidthOrHeight);
+                _sceneContext.Value.Camera.fieldOfView = Mathf.Lerp(constantWidthFov, initialFov, _staticData.Value.WidthOrHeight);
             }
         }
 

@@ -2,10 +2,13 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
 
-public class FxSystem : IEcsRunSystem
+namespace Client
 {
-    public void Run(EcsSystems systems)
+    sealed class FxSystem : IEcsRunSystem
     {
-        
+        public void Run(EcsSystems systems)
+        {
+
+        }
     }
 }

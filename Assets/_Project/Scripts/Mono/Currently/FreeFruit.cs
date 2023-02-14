@@ -1,29 +1,34 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Leopotam.EcsLite;
 
-public class FreeFruit : MonoBehaviour
+namespace Client
 {
-    [SerializeField] GameObject thisGameObject;
-
-    private void OnTriggerEnter(Collider other)
+    public class FreeFruit : MonoBehaviour
     {
-        if (gameObject.tag == "FreeFruit" && other.tag == "Fruit")
-        {
-            EcsWorldEx.GetWorld().NewEntityRef<FreeFruitsRequest>().FreeFruit = other.GetComponentInParent<Fruit>();
-            return;
-        }
+        [SerializeField] GameObject thisGameObject;
 
-        if (gameObject.tag == "SourceRope" && other.tag == "Fruit")
+        private void OnTriggerEnter(Collider other)
         {
-            Fruit hookFruit = other.GetComponentInParent<Fruit>();
-
-            if(hookFruit.IsValid)
+            if (gameObject.tag == "FreeFruit" && other.tag == "Fruit")
             {
-                hookFruit.IsValid = false;
-                EcsWorldEx.GetWorld().NewEntityRef<AddToCartRequest>().unit = thisGameObject.GetComponent<Unit>();
+                Service<EcsWorld>.Get().NewEntityRef<FreeFruitsRequest>().FreeFruit = other.GetComponentInParent<Fruit>();
+                return;
             }
 
-            return;
+            if (gameObject.tag == "SourceRope" && other.tag == "Fruit")
+            {
+                Fruit hookFruit = other.GetComponentInParent<Fruit>();
+
+                if (hookFruit.IsValid)
+                {
+                    hookFruit.IsValid = false;
+                    Service<EcsWorld>.Get().NewEntityRef<AddToCartRequest>().unit = thisGameObject.GetComponent<Unit>();
+                }
+
+                return;
+            }
         }
     }
+
 }

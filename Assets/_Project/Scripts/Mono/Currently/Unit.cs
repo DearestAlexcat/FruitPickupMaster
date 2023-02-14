@@ -1,62 +1,63 @@
 using TMPro;
 using UnityEngine;
+using Leopotam.EcsLite;
 
-public class Unit : MonoBehaviour
-{
-    [field: SerializeField] public Transform PopupPointer { get; private set; }
-
-    public int Entity { get; protected set; }
-
-    [Header("TASK")]
-    [SerializeField] TMP_Text levelTaskText;
-    public LevelTask levelTaskData;
-
-    [Header("OTHER LINKS")]
-    public Basket basket;
-    [SerializeField] protected Animator animator;
-
-    [Header("ROPE")]
-    public Rigidbody connectedBody;
-    public GrapplingRope gr;
-
-    [Header("RIGGING")]
-    public PlayerRiggingManager riggingManager;
-
-    [Header("PARTICLES")]
-    public ParticleSystem pistolFireFX;
-    public ParticleSystem addToCartFX;
-
-    public void PlayPistolFireFx()
+namespace Client
+{ 
+    public class Unit : MonoBehaviour
     {
-        pistolFireFX.Play(true);
-    }
+        [field: SerializeField] public Transform PopupPointer { get; private set; }
 
-    public void PlayAddToCartFX()
-    {
-        addToCartFX.Play(true);
-    }
+        public int Entity { get; protected set; }
 
-    public void InitializeTask(ConveyorElement conveyor)
-    {
-        levelTaskText.text = levelTaskData.GetTask(conveyor);
-        levelTaskText.gameObject.SetActive(levelTaskData.IncludeTask);
-    }
+        [Header("TASK")]
+        [SerializeField] TMP_Text levelTaskText;
+        public LevelTask levelTaskData;
 
-    public void PlayAnimation(AnimationState state, AnimationFlags flag)
-    {
-        ref var animationComponent = ref EcsWorldEx.GetWorld().GetEntityRef<AnimationStateComponent>(Entity);
+        [Header("OTHER LINKS")]
+        public Basket basket;
+        [SerializeField] protected Animator animator;
 
-        if (animationComponent.TempHash != (int)state)
+        [Header("ROPE")]
+        public Rigidbody connectedBody;
+        public GrapplingRope gr;
+
+        [Header("RIGGING")]
+        public PlayerRiggingManager riggingManager;
+
+        [Header("PARTICLES")]
+        public ParticleSystem pistolFireFX;
+        public ParticleSystem addToCartFX;
+
+        public void PlayPistolFireFx()
         {
-            animationComponent.Value |= flag;
+            pistolFireFX.Play(true);
+        }
+
+        public void PlayAddToCartFX()
+        {
+            addToCartFX.Play(true);
+        }
+
+        public void InitializeTask(ConveyorElement conveyor)
+        {
+            levelTaskText.text = levelTaskData.GetTask(conveyor);
+            levelTaskText.gameObject.SetActive(levelTaskData.IncludeTask);
+        }
+
+        public void PlayAnimation(AnimationState state, AnimationFlags flag)
+        {
+            ref var animationComponent = ref Service<EcsWorld>.Get().GetEntityRef<AnimationStateComponent>(Entity);
+
+            if (animationComponent.TempHash != (int)state)
+            {
+                animationComponent.Value |= flag;
+            }
+        }
+
+        protected void InitializeAnimationEntity()
+        {
+            Service<EcsWorld>.Get().AddEntityRef<AnimationStateComponent>(Entity).unitAnimator = animator;
         }
     }
-
-    protected void InitializeAnimationEntity()
-    {
-        EcsWorldEx.GetWorld().AddEntity<AnimationStateComponent>(Entity);
-        EcsWorldEx.GetWorld().GetEntityRef<AnimationStateComponent>(Entity).unitAnimator = animator;
-    }
 }
-
-

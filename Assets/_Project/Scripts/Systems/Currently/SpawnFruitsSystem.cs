@@ -2,35 +2,38 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
 
-public class SpawnFruitsSystem : IEcsRunSystem
+namespace Client
 {
-    private readonly EcsFilterInject<Inc<SpawnFruitsRequest>> _spawnFilter = default;
-    private readonly EcsFilterInject<Inc<Component<ConveyorElement>>> _conveyorFilter = default;
-
-    public void Run(EcsSystems systems)
+    sealed class SpawnFruitsSystem : IEcsRunSystem
     {
-        if (_spawnFilter.Value.IsEmpty()) return;
+        private readonly EcsFilterInject<Inc<SpawnFruitsRequest>> _spawnFilter = default;
+        private readonly EcsFilterInject<Inc<Component<ConveyorElement>>> _conveyorFilter = default;
 
-        foreach (var item in _conveyorFilter.Value)
+        public void Run(EcsSystems systems)
         {
-            ref var c = ref _conveyorFilter.Pools.Inc1.Get(item);
+            if (_spawnFilter.Value.IsEmpty()) return;
 
-            c.Value.time -= Time.deltaTime;
-
-            if (c.Value.time < 0f)
+            foreach (var item in _conveyorFilter.Value)
             {
-                c.Value.time = c.Value.spawnDelay;
+                ref var c = ref _conveyorFilter.Pools.Inc1.Get(item);
 
-                Fruit fruit = c.Value.GetFruit();
+                c.Value.time -= Time.deltaTime;
 
-                int entity = systems.GetWorld().NewEntity<Component<Fruit>>();
+                if (c.Value.time < 0f)
+                {
+                    c.Value.time = c.Value.spawnDelay;
 
-                fruit.Entity = entity;
-                fruit.conveyor = c.Value;
+                    Fruit fruit = c.Value.GetFruit();
 
-                fruit.fruitObj.transform.rotation = Random.rotation;
+                    int entity = systems.GetWorld().NewEntity<Component<Fruit>>();
 
-                systems.GetWorld().GetEntityRef<Component<Fruit>>(entity).Value = fruit;
+                    fruit.Entity = entity;
+                    fruit.conveyor = c.Value;
+
+                    fruit.fruitObj.transform.rotation = Random.rotation;
+
+                    systems.GetWorld().GetEntityRef<Component<Fruit>>(entity).Value = fruit;
+                }
             }
         }
     }

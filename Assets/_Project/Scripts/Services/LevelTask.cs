@@ -1,51 +1,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class LevelTask
+namespace Client
 {
-    [SerializeField] bool includeTask = true;
-    public bool IncludeTask => includeTask;
-
-    [SerializeField] int minCollect = 1;
-    [SerializeField] int maxCollect = 5;
-
-    [HideInInspector] public int targetPoolIndex;
-    [HideInInspector] public int currentCollect;
-    [HideInInspector] public int targetCollect;
-
-    public string GetTask(ConveyorElement c)
+    [System.Serializable]
+    public class LevelTask
     {
-        targetPoolIndex = Random.Range(0, c.fruitsPrefabs.Count);
-        targetCollect = Random.Range(minCollect, maxCollect + 1);
+        [SerializeField] bool includeTask = true;
+        public bool IncludeTask => includeTask;
 
-        string name = c.fruitsPrefabs[targetPoolIndex].name;
+        [SerializeField] int minCollect = 1;
+        [SerializeField] int maxCollect = 5;
 
-        if (targetCollect == 1)
+        [HideInInspector] public int targetPoolIndex;
+        [HideInInspector] public int currentCollect;
+        [HideInInspector] public int targetCollect;
+
+        public string GetTask(ConveyorElement c)
         {
-            if (name != "Apple")
+            targetPoolIndex = Random.Range(0, c.fruitsPrefabs.Count);
+            targetCollect = Random.Range(minCollect, maxCollect + 1);
+
+            string name = c.fruitsPrefabs[targetPoolIndex].name;
+
+            if (targetCollect == 1)
             {
-                name = name.TrimEnd('e');
+                if (name != "Apple")
+                {
+                    name = name.TrimEnd('e');
+                }
+
+                name = name.TrimEnd('s');
             }
 
-            name = name.TrimEnd('s');
+            return "Collect " + targetCollect + " " + name;
         }
 
-        return "Collect " + targetCollect + " " + name;
-    }
+        public bool Check—orrectness—hoice(int poolIndex)
+        {
+            return poolIndex == targetPoolIndex;
+        }
 
-    public bool Check—orrectness—hoice(int poolIndex)
-    {
-        return poolIndex == targetPoolIndex;
-    }
+        public void IncrementCollect()
+        {
+           Service<SceneContext>.Get().LevelProgress.ChangeValueWithText(++currentCollect);
+        }
 
-    public void IncrementCollect()
-    {
-        Client.EcsStartup.Instance.SceneContext.LevelProgress.ChangeValueWithText(++currentCollect);
-    }
-
-    public bool CheckLevelComplete()
-    {
-        return currentCollect >= targetCollect;
+        public bool CheckLevelComplete()
+        {
+            return currentCollect >= targetCollect;
+        }
     }
 }

@@ -1,31 +1,34 @@
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 
-public class LevelLoseSystem : IEcsRunSystem, IEcsInitSystem
+namespace Client
 {
-    private readonly EcsCustomInject<SceneContext> _sceneContext = default;
-    private readonly EcsCustomInject<Client.Services.AnalyticsManager> _gameAnalitics = default;
-
-    private readonly EcsFilterInject<Inc<LevelLoseRequest>> _filter = default;
-
-    public void Init(EcsSystems systems)
+    sealed class LevelLoseSystem : IEcsRunSystem, IEcsInitSystem
     {
-        //_sceneContext.Value.DieWindow.buttonRestart.onClick.AddListener(() =>
-        //{
-        //    _sceneContext.Value.blackout.SmoothBlackout();
-        //    _sceneContext.Value.DieWindow.SetActiveWindow(false, () => systems.GetWorld().GetPool<FinalizeRequestComponent>().Add(systems.GetWorld().NewEntity()).Value = LevelEndState.LOSE);           
-        //});
-    }
+        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
+        private readonly EcsCustomInject<Services.AnalyticsManager> _gameAnalitics = default;
 
-    public void Run(EcsSystems systems)
-    {
-        foreach (var levelLose in _filter.Value)
+        private readonly EcsFilterInject<Inc<LevelLoseRequest>> _filter = default;
+
+        public void Init(EcsSystems systems)
         {
-            //systems.GetWorld().DelEntity(levelLose);
+            //_sceneContext.Value.DieWindow.buttonRestart.onClick.AddListener(() =>
+            //{
+            //    _sceneContext.Value.blackout.SmoothBlackout();
+            //    _sceneContext.Value.DieWindow.SetActiveWindow(false, () => systems.GetWorld().GetPool<FinalizeRequestComponent>().Add(systems.GetWorld().NewEntity()).Value = LevelEndState.LOSE);           
+            //});
+        }
 
-            //_sceneContext.Value.DieWindow.SetActiveWindow(true);
+        public void Run(EcsSystems systems)
+        {
+            foreach (var levelLose in _filter.Value)
+            {
+                //systems.GetWorld().DelEntity(levelLose);
 
-            //_gameAnalitics.Value.LevelLoseGA(ILevelLink.CurrentLevel.Index);
+                //_sceneContext.Value.DieWindow.SetActiveWindow(true);
+
+                //_gameAnalitics.Value.LevelLoseGA(ILevelLink.CurrentLevel.Index);
+            }
         }
     }
 }
