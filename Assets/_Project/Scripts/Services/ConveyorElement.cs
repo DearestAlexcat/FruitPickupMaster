@@ -26,7 +26,7 @@ namespace Client
         [HideInInspector] public List<Pooler<Fruit>> fruitsPooler = new List<Pooler<Fruit>>();
 
         [Header("LINKS")]
-        public Unit unit;
+        public PlayerUnit unit;
 
         public void InitializeFruits()
         {

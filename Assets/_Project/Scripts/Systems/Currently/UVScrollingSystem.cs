@@ -7,9 +7,12 @@ namespace Client
     sealed class UVScrollingSystem : IEcsRunSystem
     {
         private readonly EcsFilterInject<Inc<UVScrollingComponent>> _uvScrollFilter = default;
+        private readonly EcsCustomInject<RuntimeData> _runtimeData = default;
 
         public void Run(EcsSystems systems)
         {
+            if (_runtimeData.Value.GameState != GameState.PLAYING) return;
+
             foreach (var it in _uvScrollFilter.Value)
             {
                 ref var c = ref _uvScrollFilter.Pools.Inc1.Get(it);

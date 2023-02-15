@@ -23,7 +23,7 @@ namespace Client
                 if (hookFruit.IsValid)
                 {
                     hookFruit.IsValid = false;
-                    Service<EcsWorld>.Get().NewEntityRef<AddToCartRequest>().unit = thisGameObject.GetComponent<Unit>();
+                    Service<EcsWorld>.Get().NewEntityRef<AddToCartRequest>().unit = thisGameObject.GetComponent<PlayerUnit>();
                 }
 
                 return;

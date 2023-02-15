@@ -25,8 +25,6 @@ namespace Client
         {
             foreach (var item in _destroyFilter.Value)
             {
-                GameObject.Destroy(ILevelLink.CurrentLevel.gameObject);
-
                 foreach (var entity in _standUnitFilter.Value)
                 {
                     _world.Value.DelEntity(entity);
@@ -68,18 +66,18 @@ namespace Client
 
         private void ResetLevel()
         {
-            ILevelLink.CurrentLevel.DeathPerLevel++;
-            _saveInJson.Value.Save();
-            _world.Value.NewEntity<LevelLoadRequest>();
+            //ILevelLink.CurrentLevel.DeathPerLevel++;
+            //_saveInJson.Value.Save();
+            //_world.Value.NewEntity<LevelLoadRequest>();
         }
 
         private void NextLevel()
         {
-            ILevelLink.CurrentLevel.DeathPerLevel = 0;
-            _saveInJson.Value.GetData.LevelIndex++;
-            _saveInJson.Value.GetData.SortLevels(_staticData.Value);
-            _saveInJson.Value.Save();
-            _world.Value.NewEntity<LevelLoadRequest>();
+            //ILevelLink.CurrentLevel.DeathPerLevel = 0;
+            //_saveInJson.Value.GetData.LevelIndex++;
+            //_saveInJson.Value.GetData.SortLevels(_staticData.Value);
+            //_saveInJson.Value.Save();
+            //_world.Value.NewEntity<LevelLoadRequest>();
         }
     }
 }

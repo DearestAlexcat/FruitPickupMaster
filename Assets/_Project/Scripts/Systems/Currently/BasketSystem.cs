@@ -10,7 +10,6 @@ namespace Client
     {
         private readonly EcsWorldInject _world = default;
 
-        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
         private readonly EcsCustomInject<StaticData> _staticData = default;
 
         private readonly EcsFilterInject<Inc<AddToCartRequest>> _addFilter = default;
@@ -39,7 +38,7 @@ namespace Client
             return null;
         }
 
-        private async UniTask AttachToGun(Unit u)
+        private async UniTask AttachToGun(PlayerUnit u)
         {
             Fruit hookFruit = GetHookFruit();
 
@@ -51,7 +50,7 @@ namespace Client
 
         private void StartPlayerInput()
         {
-            _world.Value.NewEntity<PlayerInputRequest>();
+            _world.Value.NewEntity<PlayerInputComponent>();
         }
 
         private void RemoveFruitHook()
@@ -72,7 +71,7 @@ namespace Client
              _ropeFilter.Pools.Inc1.Del(entity);
         }
 
-        public async UniTask AddToBasket(Unit u)
+        public async UniTask AddToBasket(PlayerUnit u)
         {
             Fruit hookFruit = GetHookFruit();
 
@@ -122,7 +121,7 @@ namespace Client
 
         private void HideObjectsFromFinalScene()
         {
-            _sceneContext.Value.ThisUIAnimation.Hide("SliderProgress");
+            Service<UI>.Get().ThisUIAnimation.Hide("SliderProgress");
 
             foreach (var item in _conveyorFilter.Value)
             {
@@ -138,7 +137,7 @@ namespace Client
             }
         }
 
-        private bool CheckLevelComplete(Unit u)
+        private bool CheckLevelComplete(PlayerUnit u)
         {
             bool value = u.levelTaskData.CheckLevelComplete();
 
@@ -153,22 +152,20 @@ namespace Client
                         HideObjectsFromFinalScene();
                         PlaySillyDancingAnimation(u);
 
-                        _world.Value.NewEntity<LevelCompleteRequest>();
+                        _world.Value.ChangeState(GameState.WIN);
                         _world.Value.NewEntityRef<CameraZoomRequest>();
-
-                        // _world.Value.NewEntityRef<CameraZoomRequest>().EndZoomCallback = () => _world.Value.NewEntity<LevelCompleteRequest>();
                     });
             }
 
             return value;
         }
 
-        private void PlaySillyDancingAnimation(Unit u)
+        private void PlaySillyDancingAnimation(PlayerUnit u)
         {
              u.PlayAnimation(AnimationState.SILLYDANCING, AnimationFlags.SILLYDANCING);
         }
 
-        private void CreatePopUpText(Unit u)
+        private void CreatePopUpText(PlayerUnit u)
         {
             ref var c = ref _world.Value.NewEntityRef<PopUpRequest>();
             c.SpawnPosition = u.PopupPointer.position;
@@ -177,12 +174,12 @@ namespace Client
             c.TextUP = "+1";
         }
 
-        private void IncrementCollect(Unit u)
+        private void IncrementCollect(PlayerUnit u)
         {
             u.levelTaskData.IncrementCollect();
         }
 
-        private void ShowPlusOnePopup(Unit u)
+        private void ShowPlusOnePopup(PlayerUnit u)
         {
             if (u.levelTaskData.Check—orrectness—hoice(GetHookFruit().PoolIndex))
             {

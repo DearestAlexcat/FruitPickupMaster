@@ -1,20 +1,23 @@
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
-using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 namespace Client 
 {
     sealed class PickupFruitSystem : IEcsRunSystem 
     {
-        private readonly EcsFilterInject<Inc<PlayerInputRequest>> _inputFilter = default;
         private readonly EcsFilterInject<Inc<Component<PlayerUnit>>> _playerFilter = default;
+        private readonly EcsFilterInject<Inc<PlayerInputComponent>> _inputFilter = default;
 
         private readonly EcsCustomInject<SceneContext> _sceneContext = default;
+        private readonly EcsCustomInject<RuntimeData> _runtimeData = default;
+
         private readonly EcsWorldInject _world = default;
 
         public void Run(EcsSystems systems)
         {
+            if (_runtimeData.Value.GameState != GameState.PLAYING) return;
             if (_inputFilter.Value.IsEmpty()) return;
 
             if (Input.GetMouseButtonDown(0))
@@ -34,7 +37,7 @@ namespace Client
             }
         }
 
-        private Unit GetPlayer()
+        private PlayerUnit GetPlayer()
         {
             foreach (var item in _playerFilter.Value)
             {

@@ -6246,7 +6246,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8653899934060541776}
-  - component: {fileID: 8653899934060541777}
   m_Layer: 0
   m_Name: Level 1
   m_TagString: Untagged
@@ -6271,34 +6270,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8653899934060541777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8653899934060541774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1845fe3c3d1864143a00ec3cdb7de3f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Index>k__BackingField: 1
-  conveyors:
-  - poolSize: 10
-    spawnDelay: 1
-    spawnPoint: {fileID: 8653899934487757760}
-    time: 0
-    conveyorObj: {fileID: 9207393752771317743}
-    conveyorLine: {fileID: 9207393753328301002}
-    ScrollingConveyorLine: {fileID: 9207393753328300084}
-    Speed: 1
-    FruitSpeed: 0.765
-    fruitsPrefabs:
-    - {fileID: 7227565682886762357, guid: 5ed88cbe96f0a974996f918a419732a1, type: 3}
-    - {fileID: 2466314217236481293, guid: 17381f09a9374fb42a4c67c1b992594c, type: 3}
-    - {fileID: 2066587034671718004, guid: af96d8e9b071fd34385276d700589aac, type: 3}
-    unit: {fileID: 7948563215231853670}
 --- !u!1 &8653899934070933073
 GameObject:
   m_ObjectHideFlags: 0
@@ -12173,20 +12144,5 @@ PrefabInstance:
 --- !u!4 &9207393752771317742 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 567435918064087392, guid: 26682c4934e92e048bdf8c352e10b1ea, type: 3}
-  m_PrefabInstance: {fileID: 8653899934473666190}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9207393752771317743 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 567435918064087393, guid: 26682c4934e92e048bdf8c352e10b1ea, type: 3}
-  m_PrefabInstance: {fileID: 8653899934473666190}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &9207393753328300084 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 567435918623674042, guid: 26682c4934e92e048bdf8c352e10b1ea, type: 3}
-  m_PrefabInstance: {fileID: 8653899934473666190}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &9207393753328301002 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 567435918623673668, guid: 26682c4934e92e048bdf8c352e10b1ea, type: 3}
   m_PrefabInstance: {fileID: 8653899934473666190}
   m_PrefabAsset: {fileID: 0}

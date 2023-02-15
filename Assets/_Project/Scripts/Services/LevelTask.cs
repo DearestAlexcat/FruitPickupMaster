@@ -43,7 +43,7 @@ namespace Client
 
         public void IncrementCollect()
         {
-           Service<SceneContext>.Get().LevelProgress.ChangeValueWithText(++currentCollect);
+           Service<UI>.Get().LevelProgress.ChangeValueWithText(++currentCollect);
         }
 
         public bool CheckLevelComplete()

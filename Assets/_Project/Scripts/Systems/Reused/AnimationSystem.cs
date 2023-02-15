@@ -11,12 +11,6 @@ namespace Client
         public void Init(EcsSystems systems)
         {
             //Debug.Log("SittingClap: " + Animator.StringToHash("SittingClap"));
-            //Debug.Log("SittingDisapproval: " + Animator.StringToHash("SittingDisapproval"));
-            //Debug.Log("SittingIdle: " + Animator.StringToHash("SittingIdle"));
-            //Debug.Log("SittingTalking: " + Animator.StringToHash("SittingTalking"));
-            //Debug.Log("SittingYell: " + Animator.StringToHash("SittingYell"));
-            Debug.Log("Victory: " + Animator.StringToHash("Victory"));
-            //Debug.Log("Victory2: " + Animator.StringToHash("Victory2"));
         }
 
         public void Run(EcsSystems systems)

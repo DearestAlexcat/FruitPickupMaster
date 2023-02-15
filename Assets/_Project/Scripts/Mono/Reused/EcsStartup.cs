@@ -1,6 +1,7 @@
 using Client.Services;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using System.Collections;
 using UnityEngine;
 
 namespace Client 
@@ -16,12 +17,13 @@ namespace Client
         public StaticData staticData;
         public SceneContext sceneContext;
        
-        public void Start () 
+        public IEnumerator Start () 
         {
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
             runtimeData = new RuntimeData();
+            saveInJson = new SaveInJson();
 
             Service<SceneContext>.Set(sceneContext);
             Service<RuntimeData>.Set(runtimeData);
@@ -32,11 +34,10 @@ namespace Client
             GameInitialization.FullInit();
 
             _systems
-                .Add(new GameInitSystem())
-                .Add(new CameraInitSystem())
+                .Add(new InitializeSystem())
+                .Add(new ChangeStateSystem())
 
-                .Add(new LevelCreatorSystem())
-                .Add(new LevelInitializeSystem())
+                .Add(new CameraInitSystem())
 
                 .Add(new UVScrollingSystem())
 
@@ -59,12 +60,14 @@ namespace Client
 
                 .Add(new LevelCompleteSystem())
 
-                .Add(new DestroyEntitySystem())
+               // .Add(new DestroyEntitySystem())
 #if UNITY_EDITOR
                 .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem())
 #endif
-                .Inject(staticData, runtimeData, prefabs, sceneContext, saveInJson, new AnalyticsManager())
+                .Inject(staticData, runtimeData, prefabs, sceneContext, saveInJson, Service<UI>.Get(), new AnalyticsManager())
                 .Init();
+
+            yield return null;
         }
 
         public void Update () {
@@ -74,8 +77,9 @@ namespace Client
         public void OnDestroy () {
             if (_systems != null) {
                 _systems.Destroy ();
-                _systems.GetWorld ().Destroy ();
+                _world.Destroy ();
                 _systems = null;
+                _world = null;
             }
         }
     }

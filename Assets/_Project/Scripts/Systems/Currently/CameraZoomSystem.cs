@@ -8,7 +8,6 @@ namespace Client
 {
     sealed class CameraZoomSystem : IEcsRunSystem
     {
-        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
         private readonly EcsCustomInject<StaticData> _staticData = default;
         private readonly EcsFilterInject<Inc<CameraZoomRequest>> _zoomFilter = default;
 

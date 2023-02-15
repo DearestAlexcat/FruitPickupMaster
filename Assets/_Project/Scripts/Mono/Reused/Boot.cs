@@ -1,4 +1,4 @@
-using System.Collections;
+//using System.Collections;
 using UnityEngine;
 
 namespace Client
@@ -7,13 +7,11 @@ namespace Client
     {
         [SerializeField] StaticData staticData;
 
-        IEnumerator Start()
+        void Awake()
         {
             Service<StaticData>.Set(staticData);
-
-            GameInitialization.FullInit();
-
-            yield return null;
+            //GameInitialization.FullInit();
+            // yield return null;
 
             Levels.LoadCurrentWithSkip();
         }

@@ -6,25 +6,17 @@ namespace Client
 {
     sealed class RopeRenderSystem : IEcsRunSystem
     {
-        //private readonly EcsFilterInject<Inc<RopePointsComponent>> _ropePointsFilter = default;
         private readonly EcsFilterInject<Inc<HookFruitRequest>> _hookFruitFilter = default;
         private readonly EcsFilterInject<Inc<Component<GrapplingRope>>> _ropePointsFilter = default;
         private readonly EcsWorldInject _world = default;
 
         public void Run(EcsSystems systems)
         {
-            //int i;
-
             foreach (var item in _ropePointsFilter.Value)
             {
                 var comp = _ropePointsFilter.Pools.Inc1.Get(item);
 
                 DrawRope(comp.Value);
-
-                //for (i = 0; i < comp.Points.Count; i++)
-                //{
-                //    comp.ThisLineRenderer.SetPosition(i, comp.Points[i].transform.position);
-                //}
             }
         }
 

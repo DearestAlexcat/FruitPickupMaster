@@ -43,7 +43,7 @@ namespace Client
         {
             for (int i = 0; i < UInames.Length; i++)
             {
-                Service<SceneContext>.Get().ThisUIAnimation.Hide(UInames[i], () => hideCallbackWindow?.Invoke());
+                Service<UI>.Get().ThisUIAnimation.Hide(UInames[i], () => hideCallbackWindow?.Invoke());
             }
         }
 
@@ -51,7 +51,7 @@ namespace Client
         {
             for (int i = 0; i < UInames.Length; i++)
             {
-                Service<SceneContext>.Get().ThisUIAnimation.Show(UInames[i], () => showCallbackWindow?.Invoke());
+                Service<UI>.Get().ThisUIAnimation.Show(UInames[i], () => showCallbackWindow?.Invoke());
             }
         }
 

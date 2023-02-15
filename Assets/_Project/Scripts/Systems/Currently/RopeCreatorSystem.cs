@@ -1,8 +1,6 @@
-using UnityEngine;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Client 
 {
@@ -34,7 +32,7 @@ namespace Client
             return null;
         }
 
-        public async UniTask CreateRope(Unit unit)
+        public async UniTask CreateRope(PlayerUnit unit)
         {
             unit.riggingManager.SetTarget(GetHookFruit().transform).Forget();
 
@@ -56,7 +54,7 @@ namespace Client
             _world.Value.DelEntity<Component<Fruit>>(GetHookFruit().Entity);
         }
 
-        private void InitializeRopeEntity(Unit unit)
+        private void InitializeRopeEntity(PlayerUnit unit)
         {
             ref var component = ref _world.Value.AddEntityRef<Component<GrapplingRope>>(unit.Entity);
             component.Value = unit.gr;

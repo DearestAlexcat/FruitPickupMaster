@@ -32,7 +32,7 @@ namespace Client
             }
 
             var levelName = staticData.ThisLevels.Scenes[index];
-            SceneManager.LoadScene(levelName);
+            SceneManager.LoadSceneAsync(levelName);
         }
 
         public static void RestartLevel()

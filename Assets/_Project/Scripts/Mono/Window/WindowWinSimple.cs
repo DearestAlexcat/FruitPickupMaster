@@ -11,12 +11,8 @@ namespace Client
         public Button buttonForward;
 
         [Header("CONFETTI")]
-        public List<GameObject> confetti;
         public float confettiDisplayTime;
-        public int confettiID;
-
-        [Header("OTHER")]
-        public float delayedCall;
+       
 
         private void Awake()
         {
@@ -29,10 +25,6 @@ namespace Client
 
         private IEnumerator DisplayWindow()
         {
-            yield return new WaitForSeconds(delayedCall);
-
-            confetti[confettiID].SetActive(true);
-
             InitWindow();
 
             yield return new WaitForSeconds(confettiDisplayTime);
@@ -52,16 +44,6 @@ namespace Client
 
         public override void OnDisable()
         {
-            try // Check MissingReferenceException 
-            {
-                confetti[confettiID].SetActive(false);
-            }
-            catch
-            {
-                //var ob = confetti.gameObject;
-                Debug.Log("Confetti check MissingReferenceException");
-            }
-
             base.OnDisable();
         }
     }

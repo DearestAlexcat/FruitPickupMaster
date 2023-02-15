@@ -12,19 +12,13 @@ namespace Client
 
     public struct RopeCreateRequest 
     {
-        public Unit unit;
+        public PlayerUnit unit;
     }
 
     public struct AddToCartRequest
     {
-        public Unit unit;
+        public PlayerUnit unit;
     }
-
-    public struct LevelLoseRequest { }
-
-    public struct LevelCompleteRequest { }
-
-    public struct LevelLoadRequest { }
 
     public struct FinalizeRequestComponent 
     {
@@ -69,6 +63,8 @@ namespace Client
         public GameState NewGameState;
     }
 
+    public struct PlayerInputComponent { }
+
     public struct Component<T>
     {
         public T Value;
@@ -78,8 +74,4 @@ namespace Client
     {
         public Fruit fruit;
     }
-
-    public struct LevelInitializeRequest { }
-
-    public struct PlayerInputRequest { }
 }
