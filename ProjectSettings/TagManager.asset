@@ -4,10 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - FreeFruit
-  - Fruit
-  - SourceRope
   - Missile
+  - Fruit
+  - ConveyorSegment
+  - SourceRope
+  - ConveyorTrigger
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Water
   - UI
   - FruitMask
-  - Stand
+  - 
   - 
   - 
   - 
