@@ -1,6 +1,4 @@
-# FruitPickupMaster. Unity ECS. URP.
-
-## Unity game example using LeoECS
+# FruitPickupMaster/Unity/URP/ECS
 
 ## Features
 
