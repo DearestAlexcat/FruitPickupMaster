@@ -9,6 +9,7 @@ TagManager:
   - ConveyorSegment
   - SourceRope
   - ConveyorTrigger
+  - BotZone
   layers:
   - Default
   - TransparentFX

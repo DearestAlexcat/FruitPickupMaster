@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: StaticData
   m_EditorClassIdentifier: 
   UI: {fileID: 2951365828205386757, guid: 45d0693555ce6fb41a5e1347d1153055, type: 3}
+  popup: {fileID: 2776410823966368837, guid: ad69852d14a37eb4da238285e33dfede, type: 3}
+  emojiCool: {fileID: 173990, guid: 5cca43cfc60b5584784808e5eb1ca07e, type: 3}
+  emojiTearyEyes: {fileID: 119148, guid: 60b3f14809802944f887140035574b3e, type: 3}
   hFOV: 62
   orthoSize: 10
   DefaultResolution: {x: 1080, y: 1920}
@@ -22,12 +25,17 @@ MonoBehaviour:
   zoomFactor: 0.5
   camStartPosition: {x: 0, y: 4.5, z: 7}
   camStartRotation: {x: 25, y: 180, z: 0}
-  camFinPosition: {x: 0, y: 6.75, z: 8.5}
-  camFinRotation: {x: 18, y: 180, z: 0}
+  camFinPosition: {x: 0, y: 7, z: 9.25}
+  camFinRotation: {x: 24, y: 180, z: 0}
   camFinDuration: 2.4
   camFinEase: 15
+  collect: {x: 4, y: 9}
+  botDelayChoose: {x: 1.246, y: 2.437}
   pauseBeforeEnd: 1
   shiftAmplitude: 0.4
+  fruitSpeed: 1.2
+  delayRopeReturn: 0.15
+  delayAddToCart: 0.15
   fruitIcons:
   - icon: {fileID: 21300000, guid: 4259ec4badb80e2478a2abf72186aebd, type: 3}
     key: Apple

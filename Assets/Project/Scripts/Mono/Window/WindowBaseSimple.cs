@@ -7,59 +7,54 @@ namespace Client
     public class WindowBaseSimple : MonoBehaviour
     {
         [Header("REFERENCES")]
-        public UISmoothBlackout blackout;
         public UIAnimation uIAnimation;
-        public string[] UInames;
+        public UIKEY[] uIKeys;
 
-        public Action showCallbackWindow;
-        public Action hideCallbackWindow;
+        public Action ShowCallbackWindow { get; set; }
+        public Action HideCallbackWindow { get; set; }
 
         public virtual void OnEnable()
         {
-            DOTween.Sequence()
-                .Append(blackout.SmoothBlackout())
-                .AppendCallback(() => ShowWindowElements());
+            ShowWindowElements();
         }
 
         public virtual void OnDisable() { }
 
-        public void DisableUI(string[] UInames, Action callback)
+        void ShowWindowElements()
+        {
+            for (int i = 0; i < uIKeys.Length; i++)
+            {
+                Service<UI>.Get().ThisUIAnimation.Show(uIKeys[i], ShowCallbackWindow != null ? ShowCallbackWindow.Invoke : null);
+            }
+        }
+
+        void HideWindowElements()
+        {
+            for (int i = 0; i < uIKeys.Length; i++)
+            {
+                Service<UI>.Get().ThisUIAnimation.Hide(uIKeys[i], HideCallbackWindow != null ? HideCallbackWindow.Invoke : null);
+            }
+        }
+
+        public void SetActive(bool value, Action callback = null)
+        {
+            if (value) gameObject.SetActive(value);
+            else DisableUI(callback);
+        }
+
+        public void DisableUI(Action callback)
         {
             try
             {
                 DOTween.Sequence()
-                    .AppendCallback(() => HideWindowElements())
+                    .AppendCallback(HideWindowElements)
                     .AppendInterval(0.5f)
-                    .Append(blackout.DisableSmoothBlackout(() =>
-                    {
+                    .AppendCallback(() => {
                         gameObject.SetActive(false);
                         callback?.Invoke();
-                    }));
+                    });
             }
             catch { }
-        }
-
-        public void HideWindowElements()
-        {
-            for (int i = 0; i < UInames.Length; i++)
-            {
-                Service<UI>.Get().ThisUIAnimation.Hide(UInames[i], () => hideCallbackWindow?.Invoke());
-            }
-        }
-
-        public void ShowWindowElements()
-        {
-            for (int i = 0; i < UInames.Length; i++)
-            {
-                Service<UI>.Get().ThisUIAnimation.Show(UInames[i], () => showCallbackWindow?.Invoke());
-            }
-        }
-
-        public void SetActiveWindow(bool value, Action callback = null)
-        {
-            if (value)
-                gameObject.SetActive(value);
-            else DisableUI(UInames, callback);
         }
     }
 }

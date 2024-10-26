@@ -1,7 +1,7 @@
 using Client;
 using Leopotam.EcsLite;
 
-public static class FilterEx
+public static class FilterExtension
 {
     public static bool IsEmpty(this EcsFilter filter)
     {
@@ -9,9 +9,8 @@ public static class FilterEx
     }
 }
 
-public static class EcsWorldEx
+public static class EcsWorldExtension
 {
-
     public static ref T GetEntityRef<T>(this EcsWorld world, int entity) where T : struct
     {
         return ref world.GetPool<T>().Get(entity);
@@ -34,18 +33,40 @@ public static class EcsWorldEx
         delayPool.action = action;
     }
 
+    public static void DelayAction(this EcsWorld world, float time, int entity, System.Action<int> action)
+    {
+        ref var delayPool = ref world.GetPool<ExecutionDelayCustomT1>().Add(world.NewEntity());
+        delayPool.entity = entity;
+        delayPool.time = time;
+        delayPool.action = action;
+    }
+
+    public static void DelayAction(this EcsWorld world, float time, int entity, GrapplingRope gr, System.Action<int, GrapplingRope> action)
+    {
+        ref var delayPool = ref world.GetPool<ExecutionDelayCustomT2>().Add(world.NewEntity());
+        delayPool.entity = entity;
+        delayPool.gr = gr;
+        delayPool.time = time;
+        delayPool.action = action;
+    }
+
     public static void DelayAddEntity<T>(this EcsWorld world, int entity, float time) where T : struct
     {
-        ref var delayPool = ref world.GetPool<ExecutionDelay>().Add(world.NewEntity());
+        ref var delayPool = ref world.GetPool<ExecutionDelayCustom>().Add(world.NewEntity());
         delayPool.time = time;
-        delayPool.action = () => world.GetPool<T>().Add(entity);
+        delayPool.action = static (world, entity) => world.GetPool<T>().Add(entity);
     }
 
     public static void DelayDelEntity<T>(this EcsWorld world, int entity, float time) where T : struct
     {
-        ref var delayPool = ref world.GetPool<ExecutionDelay>().Add(world.NewEntity());
+        ref var delayPool = ref world.GetPool<ExecutionDelayCustom>().Add(world.NewEntity());
         delayPool.time = time;
-        delayPool.action = () => world.GetPool<T>().Del(entity);
+        delayPool.action = static (world, entity) => world.GetPool<T>().Del(entity);
+    }
+
+    public static bool Has<T>(this EcsWorld world, int entity) where T : struct
+    {
+        return world.GetPool<T>().Has(entity);
     }
 
     public static ref T AddEntityRef<T>(this EcsWorld world, int entity) where T : struct

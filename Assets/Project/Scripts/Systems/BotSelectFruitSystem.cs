@@ -6,80 +6,86 @@ namespace Client
 {
     public class BotSelectFruitSystem : IEcsRunSystem
     {
-        private readonly EcsFilterInject<Inc<Bot, Component<PlayerUnit>>, Exc<StopInput>> _playerFilter = default;
-        private readonly EcsFilterInject<Inc<Component<Fruit>, InBotResponseZone>, Exc<New, FreeFruitsRequest, SelectedFruit>> _fruitsFilter = default;
+        private readonly EcsFilterInject<Inc<Bot, InGroup, Task>, Exc<SelectedFruit, StoppingSelection>> _participantFilter = default;
+        private readonly EcsFilterInject<Inc<Component<Fruit>, InGroup, InBotResponseZone>> _fruitsFilter = default;
 
+        private readonly EcsCustomInject<StaticData> _staticData = default;
+        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
         private readonly EcsCustomInject<RuntimeData> _runtimeData = default;
+
         private readonly EcsWorldInject _world = default;
 
-        public void Run(EcsSystems systems)
+        public void Run(IEcsSystems systems)
         {
-            if (_runtimeData.Value.GameState != GameState.PLAYING) return;
-
-            foreach (var item in _playerFilter.Value)
+            if (_runtimeData.Value.GameState == GameState.PLAYING || _runtimeData.Value.GameState == GameState.LEVEL_COMPLETE)
             {
-                ref var bot = ref _playerFilter.Pools.Inc2.Get(item).Value;
-
-                bot.time -= Time.deltaTime;
-
-                if (bot.time < 0f)
+                foreach (var entity in _participantFilter.Value)
                 {
-                    bot.time = Random.Range(bot.delayChoose.x, bot.delayChoose.y);
+                    ref var time = ref _participantFilter.Pools.Inc1.Get(entity).Time;
+                    time -= Time.deltaTime;
 
-                    Fruit fruit = GetRandomFruit(bot.LevelTask.TaskIndex);
+                    if (time < 0f)
+                    {
+                        time = Random.Range(_staticData.Value.botDelayChoose.x, _staticData.Value.botDelayChoose.y);
 
-                    StopInput(item);
-                    SelectedFruit(fruit, item);
+                        int iteration = 10;
+
+                        while (!SelectedFruit(GetRandomFruit(entity), entity) && iteration > 0) { iteration--; }
+                    }
                 }
             }
         }
 
-        private Fruit GetRandomFruit(int taskindex)
+        bool SelectedFruit(Fruit fruit, int entity)
         {
-            if (Random.value * 100f <= 0.37863f)
+            if (fruit != null)
+            {
+                if (fruit.SetCapture(entity))
+                {
+                    _world.Value.AddEntityRef<SelectedFruit>(entity).fruit = fruit;
+                    _world.Value.AddEntity<RopeCreateRequest>(entity);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        Fruit GetRandomFruit(int entity)
+        {
+            int conveyorIndex = _participantFilter.Pools.Inc2.Get(entity).ConveyorIndex;
+            
+            if (Random.value < 0.37863f) // Select a fruit according to the task
             {
                 Fruit selectedFruit;
 
+                int taskindex = _participantFilter.Pools.Inc3.Get(entity).TargetPoolIndex;
+
                 foreach (var item in _fruitsFilter.Value)
                 {
-                    selectedFruit = _fruitsFilter.Pools.Inc1.Get(item).Value;
-                    if (selectedFruit.PoolIndex == taskindex)
+                    if(conveyorIndex == _fruitsFilter.Pools.Inc2.Get(item).ConveyorIndex)
                     {
-                        return selectedFruit;
+                        selectedFruit = _fruitsFilter.Pools.Inc1.Get(item).Value;
+                        if (selectedFruit.PoolIndex == taskindex)
+                        {
+                            return selectedFruit;
+                        }
                     }
                 }
             }
-            else
+            else // Otherwise, another fruit
             {
-                int selectIndex = Random.Range(0, _fruitsFilter.Value.GetEntitiesCount());
-                int index = 0;
-
                 foreach (var item in _fruitsFilter.Value)
                 {
-                    if (selectIndex == index)
+                    if (conveyorIndex == _fruitsFilter.Pools.Inc2.Get(item).ConveyorIndex)
                     {
                         return _fruitsFilter.Pools.Inc1.Get(item).Value;
                     }
-
-                    index++;
                 }
             }
 
             return null;
-        }
-
-        private void SelectedFruit(Fruit f, int entity)
-        {
-            if(f != null)
-            {
-                _world.Value.AddEntityRef<SelectedFruit>(entity).fruit = f;
-                _world.Value.AddEntity<RopeCreateRequest>(entity);
-            }
-        }
-
-        private void StopInput(int entity)
-        {
-            _world.Value.AddEntity<StopInput>(entity);
-        }
+        }    
     }
 }

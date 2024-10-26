@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 namespace Client
@@ -11,7 +10,6 @@ namespace Client
         public LineRenderer lr;
         public Transform gunTip;
         [HideInInspector] public Transform grapplePoint;
-        [HideInInspector] public Rigidbody grappleRigidBody;
 
         [Space]
         public int quality;
@@ -40,12 +38,39 @@ namespace Client
 
         [HideInInspector] public bool IsPoolThing = false;
 
-        public void SetBackward()
+        public void RopeReturnInit()
         {
             progress = 0f;
             Spring.SetValue(0f);
             Spring.SetVelocity(velocity);
             currentGrapplePosition = grapplePoint.position;
+        }
+
+        public void ResetState()
+        {
+            lr.positionCount = 0;
+            Spring.Reset();
+        }
+
+        public void RopeLaunchInit(Transform grapplePoint)
+        {
+            if (lr.positionCount == 0)
+            {          
+                Spring.SetVelocity(velocity);
+                lr.positionCount = quality + 1;
+            }
+
+            this.grapplePoint = grapplePoint;
+
+            progress = 0f;
+            currentGrapplePosition = gunTip.position;
+        }
+
+        public void ForwardRope(float deltatime)
+        {
+            progress += Time.deltaTime * drawSpeed;
+            currentGrapplePosition = Vector3.Lerp(gunTip.position, grapplePoint.position, progress); // Replace with exp?!
+            DrawRope(deltatime, affectForwardCurve, damperForward, strengthForward);
         }
 
         public void BackwardRope(float deltatime)
@@ -55,38 +80,14 @@ namespace Client
             DrawRope(deltatime, affectBackwardCurve, damperBackward, strengthBackward);
         }
 
-        public void SetForward(Transform grapplePoint, Rigidbody grappleRigidBody)
-        {
-            if (lr.positionCount == 0)
-            {          
-                Spring.SetVelocity(velocity);
-                lr.positionCount = quality + 1;
-            }
-
-            this.grapplePoint = grapplePoint;
-            this.grappleRigidBody = grappleRigidBody;
-
-            progress = 0f;
-            currentGrapplePosition = gunTip.position;
-        }
-
         public bool IsForwardDrawRopeEnded()
         {
-            //Debug.Log("+" + Vector3.SqrMagnitude(grapplePoint.position - lr.GetPosition(quality)));
             return Vector3.SqrMagnitude(grapplePoint.position - lr.GetPosition(quality)) < 0.01f;
         }
 
         public bool IsBackwardDrawRopeEnded()
         {
-            //Debug.Log("-" + Vector3.SqrMagnitude(lr.GetPosition(quality) - gunTip.position));
             return Vector3.SqrMagnitude(lr.GetPosition(quality) - gunTip.position) < 0.01f;
-        }
-
-        public void ForwardRope(float deltatime)
-        {
-            progress += Time.deltaTime * drawSpeed;
-            currentGrapplePosition = Vector3.Lerp(gunTip.position, grapplePoint.position, progress);
-            DrawRope(deltatime, affectForwardCurve, damperForward, strengthForward);
         }
 
         public void PullGrapplingThing()
@@ -101,10 +102,10 @@ namespace Client
         {
             Spring.SetDamper(damper);
             Spring.SetStrength(strength);
-            Spring.Update(deltatime);               // Calculate Spring.Value
+            Spring.Update(deltatime);                               // Calculate Spring.Value
 
-            var grapplePointPosition = grapplePoint.position;    // end pos 
-            var gunTipPosition = gunTip.position;                 // start pos
+            var grapplePointPosition = grapplePoint.position;       // end pos 
+            var gunTipPosition = gunTip.position;                   // start pos
 
             // Determine the angle of inclination
             var up = Quaternion.LookRotation((grapplePointPosition - gunTipPosition).normalized) * Vector3.up;

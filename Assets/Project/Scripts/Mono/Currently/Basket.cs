@@ -16,6 +16,8 @@ namespace Client
 
             index = (index + 1) % pointers.Count;
 
+            // Если место занято, то освобождаем его удалив прошлый объект
+
             await UniTask.NextFrame();
 
             fruit.transform.localPosition = Vector3.zero;

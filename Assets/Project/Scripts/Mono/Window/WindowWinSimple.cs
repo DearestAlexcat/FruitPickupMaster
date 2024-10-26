@@ -6,44 +6,45 @@ namespace Client
 {
     public class WindowWinSimple : WindowBaseSimple
     {
-        [Header("BUTTONS")]
-        public Button buttonForward;
-
-        [Header("CONFETTI")]
-        public float confettiDisplayTime;
-       
+        [SerializeField] Button buttonForward;
+        [SerializeField] float confettiDisplayTime;
 
         private void Awake()
         {
-            uIAnimation.SetStartPosition("LevelStateText");
-            uIAnimation.SetStartPosition("NextLevelButton");
+            uIAnimation.SetStartPosition(UIKEY.LEVEL_STATE_TEXT);
+            uIAnimation.SetStartPosition(UIKEY.NEXT_LEVEL_BUTTON);
 
-            showCallbackWindow += () => buttonForward.enabled = true;
-            hideCallbackWindow += () => buttonForward.enabled = false;
+            buttonForward.enabled = false;
+
+            ButtonForwardInitialize();
+
+            ShowCallbackWindow += () => buttonForward.enabled = true;
+        }
+
+        private void ButtonForwardInitialize()
+        {
+            buttonForward.onClick.AddListener(() =>
+            {
+                buttonForward.enabled = false;
+
+                SetActive(false, static () =>
+                {
+                    Service<UI>.Get().Blackout.SmoothBlackout(
+                        Levels.LoadCurrent
+                    );
+                });
+            });
         }
 
         private IEnumerator DisplayWindow()
         {
-            InitWindow();
-
             yield return new WaitForSeconds(confettiDisplayTime);
-
             base.OnEnable();
-        }
-
-        void InitWindow()
-        {
-            buttonForward.enabled = false;
         }
 
         public override void OnEnable()
         {
             StartCoroutine(DisplayWindow());
-        }
-
-        public override void OnDisable()
-        {
-            base.OnDisable();
         }
     }
 }

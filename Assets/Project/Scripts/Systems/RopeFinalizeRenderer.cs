@@ -1,93 +1,108 @@
-using DG.Tweening;
+using Cysharp.Threading.Tasks;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
-using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine;
 
 namespace Client 
 {
-    sealed class RopeFinalizeRenderer : IEcsRunSystem 
+    sealed public class RopeFinalizeRenderer : IEcsRunSystem 
     {
         private readonly EcsWorldInject _world = default;
-        private readonly EcsFilterInject<Inc<Component<GrapplingRope>, SelectedFruit>> _ropePointsFilter = default;
+        private readonly EcsCustomInject<SceneContext> _sceneContext = default;
+        private readonly EcsCustomInject<StaticData> _staticData = default;
 
-        public void Run(EcsSystems systems) 
+        private readonly EcsFilterInject<Inc<Participant, InGroup, RenderRope>> _participantFilter = default;
+
+        public void Run(IEcsSystems systems) 
         {
-            foreach (var entity in _ropePointsFilter.Value)
+            foreach (var entity in _participantFilter.Value)
             {
-                GrapplingRope gr = _ropePointsFilter.Pools.Inc1.Get(entity).Value;
+                var gr = GetUnit(entity).GetGrapplingRope;
 
-                if (_world.Value.GetPool<CheckGrapplingForward>().Has(entity))
+                if (_world.Value.GetPool<RenderRopeLaunch>().Has(entity))
                 {
-                    FinalizeForwardRender(entity, gr);
-                }
+                    if (gr.IsForwardDrawRopeEnded())
+                    {
+                        _world.Value.DelEntity<RenderRopeLaunch>(entity);
 
-                if (_world.Value.GetPool<CheckGrapplingBackward>().Has(entity))
+                        // Visual delay before the rope is returned
+                        _world.Value.DelayAction(_staticData.Value.delayRopeReturn, entity, gr, RenderRopeReturn);
+                    }
+                }
+                else if (_world.Value.GetPool<RenderRopeReturn>().Has(entity))
                 {
-                    FinalizeBackwardRender(entity, gr);
+                    if (gr.IsBackwardDrawRopeEnded())
+                    {
+                        _world.Value.DelEntity<RenderRope>(entity);
+                        _world.Value.DelEntity<RenderRopeReturn>(entity);
+
+                        gr.ResetState();
+
+                        CompletionOperation(entity, gr);
+                    }
                 }
             }
         }
 
-        public void FinalizeForwardRender(int entity, GrapplingRope gr)
+        void CompletionOperation(int entity, GrapplingRope gr)
         {
-            if (gr.IsForwardDrawRopeEnded())
+            if (gr.IsPoolThing)
             {
-                _world.Value.DelayAction(0.15f, () => DoFinalizeForwardRender(entity, gr));
-                _world.Value.DelEntity<CheckGrapplingForward>(entity);
+                AttachToGun(entity, gr);
+                // Visual delay before the rope is returned
+                _world.Value.DelayAction(_staticData.Value.delayAddToCart, entity, AddToCartRequest);
+            }
+            else
+            {
+                SetIdlePosition(entity).Forget();
+            }
+
+            async UniTask SetIdlePosition(int entity)
+            {
+                await GetUnit(entity).riggingManager.SetPose_Idle();
+                _world.Value.DelEntity<SelectedFruit>(entity);
             }
         }
 
-        public void FinalizeBackwardRender(int entity, GrapplingRope gr)
+        Unit GetUnit(int entity)
         {
-            if (gr.IsBackwardDrawRopeEnded())
-            {
-                _world.Value.DelayAction(0.15f, () => DoFinalizeBackwardRender(entity, gr));
-                _world.Value.DelEntity<CheckGrapplingBackward>(entity);
-            }
+            return _sceneContext.Value
+                        .Groups[_participantFilter.Pools.Inc2.Get(entity).ConveyorIndex]
+                        .Units[_participantFilter.Pools.Inc1.Get(entity).Index];
         }
 
-        public void DoFinalizeForwardRender(int entity, GrapplingRope gr)
+        void AddToCartRequest(int entity)
         {
-            _world.Value.DelEntity<RenderGrapplingForward>(entity);
+            _world.Value.AddEntity<AddToCartRequest>(entity);
+        }
 
-            _world.Value.AddEntity<RenderGrapplingBackward>(entity);
-            _world.Value.AddEntity<CheckGrapplingBackward>(entity);
-            gr.SetBackward();
-
+        void AttachToGun(int entity, GrapplingRope gr)
+        {
+            var selectedFruit = _world.Value.GetEntityRef<SelectedFruit>(entity).fruit;
+            selectedFruit.transform.parent = gr.gunTip;
+            selectedFruit.transform.localPosition = Vector3.zero;
+        }
+ 
+        void RenderRopeReturn(int entity, GrapplingRope gr)
+        {
+            GetUnit(entity).riggingManager.LostAimTarget_Head(); // Stop looking at the fruit
+            _world.Value.AddEntity<RenderRopeReturn>(entity);
+            gr.RopeReturnInit();
             FreeFruit(entity, gr);
         }
 
-        public void DoFinalizeBackwardRender(int entity, GrapplingRope gr)
+        void FreeFruit(int entity, GrapplingRope gr)
         {
-            var selectedFruit = _ropePointsFilter.Pools.Inc2.Get(entity).fruit;
-            _world.Value.GetEntityRef<Component<Fruit>>(selectedFruit.Entity).Value.ThisRigidbody.DOKill();
+            var task = _world.Value.GetEntityRef<Task>(entity);
+            var selectedFruit = _world.Value.GetEntityRef<SelectedFruit>(entity).fruit;
 
-            _world.Value.DelEntity<RenderGrapplingBackward>(entity);
-            _world.Value.AddEntity<AddToCartRequest>(entity);
+            gr.IsPoolThing = selectedFruit.PoolIndex == task.TargetPoolIndex; // Is it possible to drag fruit?
 
-            RemoveRope(entity, gr);
-        }
-
-        private void RemoveRope(int entity, GrapplingRope gr)
-        {
-            gr.Spring.Reset();
-            gr.lr.positionCount = 0;
-            _world.Value.DelEntity<Component<GrapplingRope>>(entity);
-        }
-
-        private void FreeFruit(int entity, GrapplingRope gr)
-        {
-            var unit = _world.Value.GetPool<Component<PlayerUnit>>().Get(entity).Value;
-            var selectedFruit = _ropePointsFilter.Pools.Inc2.Get(entity).fruit;
-            bool result = unit.LevelTask.Check—orrectness—hoice(selectedFruit.PoolIndex);
-          
-            gr.IsPoolThing = result;
-          
-            if (result)
+            if (gr.IsPoolThing)
             {
-                _world.Value.DelEntity<FruitMovementSettings>(selectedFruit.Entity);
-                _world.Value.GetEntityRef<Component<Fruit>>(selectedFruit.Entity).Value.ThisRigidbody.DOKill();
-            }       
+                selectedFruit.FreeFruitFromPhysics();
+                _world.Value.DelEntity<FruitMovement>(selectedFruit.Entity);
+            }
         }
     }
 }

@@ -4,8 +4,9 @@ using DG.Tweening;
 
 public class UISmoothBlackout : MonoBehaviour
 {
-    public Image panel;
-    public Ease ease;
+    public Image blackout;
+    public Ease easeShow;
+    public Ease easeHide;
     public float showDuration = 0.2f;
     public float hideDuration = 0.2f;
     public float minAlpha = 0f;
@@ -13,32 +14,32 @@ public class UISmoothBlackout : MonoBehaviour
 
     public void SetColorAlpha(float a)
     {
-        Color c = panel.color;
+        Color c = blackout.color;
         c.a = a;
-        panel.color = c;
-    }
-
-    public Tween SmoothBlackout(float show_duration, System.Action onComplete = null)
-    {
-        SetColorAlpha(minAlpha);
-
-        return panel.DOFade(maxAlpha, show_duration).SetEase(ease).OnComplete(() => { onComplete?.Invoke(); });
-    }
-
-    public Tween DisableSmoothBlackout(float hide_duration, System.Action onComplete = null)
-    {
-        return panel.DOFade(minAlpha, hide_duration).SetEase(ease).OnComplete(() => { onComplete?.Invoke(); });
+        blackout.color = c;
     }
 
     public Tween SmoothBlackout(System.Action onComplete = null)
     {
         SetColorAlpha(minAlpha);
-
-        return panel.DOFade(maxAlpha, showDuration).SetEase(ease).OnComplete(() => { onComplete?.Invoke(); });
+        return blackout.DOFade(maxAlpha, showDuration).SetEase(easeShow).OnComplete(onComplete != null ? onComplete.Invoke : null);
     }
 
     public Tween DisableSmoothBlackout(System.Action onComplete = null)
     {
-        return panel.DOFade(minAlpha, hideDuration).SetEase(ease).OnComplete(() => { onComplete?.Invoke(); });
+        SetColorAlpha(maxAlpha);
+        return blackout.DOFade(minAlpha, hideDuration).SetEase(easeHide).OnComplete(onComplete != null ? onComplete.Invoke : null);
+    }
+
+    public Tween SmoothBlackout(float showDuration, System.Action onComplete = null)
+    {
+        SetColorAlpha(minAlpha);
+        return blackout.DOFade(maxAlpha, showDuration).SetEase(easeShow).OnComplete(onComplete != null ? onComplete.Invoke : null);
+    }
+
+    public Tween DisableSmoothBlackout(float hideDuration, System.Action onComplete = null)
+    {
+        SetColorAlpha(maxAlpha);
+        return blackout.DOFade(minAlpha, hideDuration).SetEase(easeHide).OnComplete(onComplete != null ? onComplete.Invoke : null);
     }
 }
