@@ -35,8 +35,6 @@ namespace Client
                 .Add(new InitializeSystem())           
                 .Add(new ChangeStateSystem())         
 
-                .Add(new ConveyorsMovementSystem())    
-
                 .Add(new SpawnFruitsSystem())          
                 .Add(new FreeFruitsSystem())           
 

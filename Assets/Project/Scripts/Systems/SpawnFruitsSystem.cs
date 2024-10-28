@@ -64,7 +64,7 @@ namespace Client
             _world.Value.AddEntityRef<InGroup>(entity).ConveyorIndex = conveyorIndex;
 
             _world.Value.GetEntityRef<Component<Fruit>>(entity).Value = fruit;
-            _world.Value.GetEntityRef<FruitMovement>(entity).Speed = conveyor.Speed;
+            _world.Value.GetEntityRef<FruitMovement>(entity).Speed = conveyor.FruitSpeed;
             _world.Value.GetEntityRef<FruitMovement>(entity).TargetPosition = conveyor.GetFinishPosition();
         }
     }

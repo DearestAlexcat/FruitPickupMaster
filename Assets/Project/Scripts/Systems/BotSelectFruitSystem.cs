@@ -29,7 +29,6 @@ namespace Client
                         time = Random.Range(_staticData.Value.botDelayChoose.x, _staticData.Value.botDelayChoose.y);
 
                         int iteration = 10;
-
                         while (!SelectedFruit(GetRandomFruit(entity), entity) && iteration > 0) { iteration--; }
                     }
                 }

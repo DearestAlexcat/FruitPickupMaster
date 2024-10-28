@@ -58,10 +58,10 @@ public class PlayerRiggingManager : MonoBehaviour // Temp class. To do: Make ani
 
     async public UniTask SetPose_Laydown()
     {
-        laTarget.MoveTo("laydown").Forget();
-        laim.MoveTo("laydown").Forget();
-        raTarget.MoveTo("laydown").Forget();
-        raim.MoveTo("laydown").Forget();
+        laTarget.SetOrientationTo("laydown").Forget();
+        laim.SetOrientationTo("laydown").Forget();
+        raTarget.SetOrientationTo("laydown").Forget();
+        raim.SetOrientationTo("laydown").Forget();
 
         float time = 0f;
 
@@ -85,8 +85,8 @@ public class PlayerRiggingManager : MonoBehaviour // Temp class. To do: Make ani
 
     async public UniTask SetPose_Idle()
     {
-        laim.MoveTo("idle").Forget();
-        raim.MoveTo("idle").Forget();
+        laim.SetOrientationTo("idle").Forget();
+        raim.SetOrientationTo("idle").Forget();
 
         float time = 0f;
 
@@ -116,7 +116,7 @@ public class PlayerRiggingManager : MonoBehaviour // Temp class. To do: Make ani
 
     async public UniTask SetPose_Aiming()
     {
-        raim.MoveTo("idle").Forget();
+        raim.SetOrientationTo("idle").Forget();
         laim.RotateTo("aiming").Forget();
 
         float time = 0f;

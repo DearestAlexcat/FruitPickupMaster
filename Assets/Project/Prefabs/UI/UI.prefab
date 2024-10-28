@@ -754,7 +754,7 @@ MonoBehaviour:
   - key: 0
     rectTransform: {fileID: 83725841088500504}
     startPosition: {x: 0, y: 300, z: 0}
-    endPosition: {x: 0, y: -170, z: 0}
+    endPosition: {x: 0, y: -400, z: 0}
     duration: 0.46
     easeStart: 26
     easeEnd: 27

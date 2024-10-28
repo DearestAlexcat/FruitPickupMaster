@@ -37,14 +37,14 @@ public class MultiOrientation : MonoBehaviour
         return null;
     }
 
-    async public UniTaskVoid MoveTo(string to)
+    async public UniTaskVoid SetOrientationTo(string to)
     {
         DataOrientation t = Get(to);
 
         float k = 0f;
 
         Vector3 startPosition = transform.localPosition;
-        Quaternion startRotation = transform.rotation;
+        Quaternion startRotation = transform.localRotation;
         Quaternion endRotation = Quaternion.Euler(t.rotation);
 
         while (k < 1f)
@@ -53,14 +53,8 @@ public class MultiOrientation : MonoBehaviour
 
             k += Time.deltaTime / duration;
             transform.localPosition = Vector3.Lerp(startPosition, t.positon, k);
-            transform.rotation = Quaternion.Lerp(startRotation, endRotation, k); 
+            transform.localRotation = Quaternion.Lerp(startRotation, endRotation, k);
             await UniTask.NextFrame();
-        }
-
-        if(!cts.Token.IsCancellationRequested)
-        {
-            transform.localPosition = t.positon;
-            transform.rotation = endRotation;
         }
     }
 
@@ -70,7 +64,7 @@ public class MultiOrientation : MonoBehaviour
 
         float k = 0f;
 
-        Quaternion startRotation = transform.rotation;
+        Quaternion startRotation = transform.localRotation;
         Quaternion endRotation = Quaternion.Euler(t.rotation);
 
         while (k < 1f)
@@ -78,12 +72,9 @@ public class MultiOrientation : MonoBehaviour
             if (cts.Token.IsCancellationRequested) return;
 
             k += Time.deltaTime / duration;
-            transform.rotation = Quaternion.Lerp(startRotation, endRotation, k);
+            transform.localRotation = Quaternion.Lerp(startRotation, endRotation, k);
             await UniTask.NextFrame();
         }
-
-        if (!cts.Token.IsCancellationRequested)
-            transform.rotation = endRotation;
     }
 
 #if UNITY_EDITOR
@@ -92,7 +83,7 @@ public class MultiOrientation : MonoBehaviour
     {
         DataOrientation t = Get(keyPosition);
         transform.localPosition = t.positon;
-        transform.rotation = Quaternion.Euler(t.rotation);
+        transform.localRotation = Quaternion.Euler(t.rotation);
     }
 #endif
 

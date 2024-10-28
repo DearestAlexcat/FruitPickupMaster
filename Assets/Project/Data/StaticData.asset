@@ -23,10 +23,10 @@ MonoBehaviour:
   zoomDuration: 2
   zoomSpeed: 1
   zoomFactor: 0.5
-  camStartPosition: {x: 0, y: 4.5, z: 7}
-  camStartRotation: {x: 25, y: 180, z: 0}
-  camFinPosition: {x: 0, y: 7, z: 9.25}
-  camFinRotation: {x: 24, y: 180, z: 0}
+  camStartPosition: {x: 0, y: 5, z: -7}
+  camStartRotation: {x: 25, y: 0, z: 0}
+  camFinPosition: {x: 0, y: 7, z: -9.25}
+  camFinRotation: {x: 25, y: 0, z: 0}
   camFinDuration: 2.4
   camFinEase: 15
   collect: {x: 4, y: 9}
